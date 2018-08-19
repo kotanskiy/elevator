@@ -3,7 +3,7 @@ from app import *
 
 @app.route('/')
 def index():
-    return flask.Response('Hello')
+    return flask.render_template('index.html')
 
 
 @app.route('/on_up/<int:current_floor>')
