@@ -54,6 +54,8 @@ class ElevatorManager:
     def on_up(self, current_floor):
         if current_floor == Elevator.max_count_of_floors:
             raise RuntimeError('top floor')
+        if current_floor < 1 or current_floor > Elevator.max_count_of_floors:
+            raise RuntimeError('Floor does not exist')
         for elevator in self.elevators:
             if elevator.current_floor <= current_floor and elevator.vector >= 0:
                 if elevator.current_floor != current_floor:
@@ -61,10 +63,12 @@ class ElevatorManager:
                 return elevator, self.elevators.index(elevator)
 
     def on_down(self, current_floor):
-        if current_floor < 1:
+        if current_floor == 1:
             raise RuntimeError('bottom floor')
+        if current_floor < 1 or current_floor > Elevator.max_count_of_floors:
+            raise RuntimeError('Floor does not exist')
         for elevator in self.elevators:
-            if elevator.current_floor >= current_floor and elevator.vector <= 0:
+            if elevator.current_floor >= current_floor and elevator.vector <= 0 or current_floor == Elevator.max_count_of_floors and elevator.vector >= 0:
                 if elevator.current_floor != current_floor:
                     elevator.selected_floors.add(current_floor)
                 return elevator, self.elevators.index(elevator)
