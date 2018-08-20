@@ -1,4 +1,7 @@
+import threading
 from time import sleep
+
+event = threading.Event()
 
 
 class Elevator:
@@ -39,6 +42,7 @@ class Elevator:
             raise RuntimeError('Are you on this floor')
         self.passengers.append({'selected_floor': selected_floor_by_passenger})
         self.selected_floors.add(selected_floor_by_passenger)
+        event.set()
 
     def upload_passengers(self, current_floor):
         for passenger in self.passengers:
@@ -66,6 +70,8 @@ class ElevatorManager:
             distances.append({'distance': abs(current_floor - elevator.current_floor), 'elevator': elevator,
                               'id': self.elevators.index(elevator)})
         selected_elevator = min(distances, key=lambda distance: distance['distance'])
+        selected_elevator['elevator'].selected_floors.add(current_floor)
+        event.set()
         return selected_elevator['elevator'], selected_elevator['id']
 
     def on_down(self, current_floor):
@@ -83,6 +89,8 @@ class ElevatorManager:
             distances.append({'distance': abs(current_floor - elevator.current_floor), 'elevator': elevator,
                                   'id': self.elevators.index(elevator)})
         selected_elevator = min(distances, key=lambda distance: distance['distance'])
+        selected_elevator['elevator'].selected_floors.add(current_floor)
+        event.set()
         return selected_elevator['elevator'], selected_elevator['id']
 
 
