@@ -61,6 +61,13 @@ class ElevatorManager:
                 if elevator.current_floor != current_floor:
                     elevator.selected_floors.add(current_floor)
                 return elevator, self.elevators.index(elevator)
+        else:
+            distances = []
+            for elevator in self.elevators:
+                distances.append({'distance': abs(current_floor - elevator.current_floor), 'elevator': elevator,
+                                  'id': self.elevators.index(elevator)})
+            selected_elevator = min(distances, key=lambda distance: distance['distance'])
+            return selected_elevator['elevator'], selected_elevator['id']
 
     def on_down(self, current_floor):
         if current_floor == 1:
@@ -72,6 +79,14 @@ class ElevatorManager:
                 if elevator.current_floor != current_floor:
                     elevator.selected_floors.add(current_floor)
                 return elevator, self.elevators.index(elevator)
+        else:
+            distances = []
+            for elevator in self.elevators:
+                distances.append({'distance': abs(current_floor - elevator.current_floor), 'elevator': elevator,
+                                  'id': self.elevators.index(elevator)})
+            selected_elevator = min(distances, key=lambda distance: distance['distance'])
+            return selected_elevator['elevator'], selected_elevator['id']
+
 
     def move_elevator_to_next_floor(self, elevator):
         if elevator.selected_floors:

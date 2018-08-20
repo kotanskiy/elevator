@@ -3,6 +3,7 @@ import threading
 from config import Configuration
 from elevator import ElevatorManager
 
+
 app = flask.Flask(__name__)
 app.config.from_object(Configuration)
 
@@ -15,6 +16,7 @@ def run_elevator(manager, elevator):
 
 
 for elevator in manager.elevators:
-    threading.Thread(target=run_elevator, kwargs={'manager': manager, 'elevator': elevator}).start()
+    threading.Thread(target=run_elevator, kwargs={'manager': manager, 'elevator': elevator}, daemon=True).start()
+
 
 from views import *
