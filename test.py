@@ -2,7 +2,7 @@ import threading
 import unittest
 from time import sleep
 
-from app import run_elevator, app
+from app import app
 from elevator import ElevatorManager
 
 
@@ -10,8 +10,6 @@ class ViewsManagerTestCase(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
         self.manager = ElevatorManager()
-        for elevator in self.manager.elevators:
-            threading.Thread(target=run_elevator, kwargs={'manager': self.manager, 'elevator': elevator})
 
     def test_on_up(self):
         self.app.get('/on_up/1')
