@@ -38,7 +38,11 @@ def load_passenger(id, selected_floor):
 
 @app.route('/elevator_state/<int:id>')
 def elevator_state(id):
-    return flask.Response(str(manager.elevators[id]) + ' id: {}'.format(id))
+    try:
+        elevator = manager.elevators[id]
+        return flask.Response(str(elevator) + ' id: {}'.format(id))
+    except IndexError:
+        return flask.Response('Elevator does not exist')
 
 
 
